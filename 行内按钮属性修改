@@ -1,0 +1,31 @@
+   if(sendIf == true){
+                    var sendButton=this;
+                    sendButton.innerText="日报生成中..."
+                    sendButton.disabled=true;
+                    sendButton.style.backgroundColor="#89c4f4"
+                    $.ajax({
+                        //几个参数需要注意一下
+                        type: "POST",//方法类型
+                        dataType: "json",//预期服务器返回的数据类型
+                        url: CONTEXT_PATH+'/sendDailyReport/generateDaily',
+                        data: {date: date, managerId: id,platformId:platformId},
+                        success: function (result) {
+                            sendButton.innerText="发送日报"
+                            sendButton.disabled=false;
+                            sendButton.style.backgroundColor="#009688"
+                            if (result.code == 200) {
+                                layer.alert(result.message, {icon: 6, offset: '150px'});
+                            } else if (result.code == 500) {
+                                layer.alert(result.message, {icon: 5, offset: '150px'});
+                            } else {
+                                layer.alert("系统异常", {icon: 5, offset: '150px'});
+                            }
+                        },
+                        error: function () {
+                            sendButton.innerText="发送日报"
+                            sendButton.disabled=false;
+                            sendButton.style.backgroundColor="#009688"
+                            layer.alert("异常", {icon: 5, offset: '150px'});
+                        }
+ //this 代表当前按钮对象--可以在控制台看其属性和方法。。。
+                       
